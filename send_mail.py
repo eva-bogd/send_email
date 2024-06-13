@@ -26,7 +26,16 @@ EMAIL_USER = os.getenv('EMAIL_USER')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
 
-def create_msg(email):
+def create_msg(email: str) -> MIMEMultipart:
+    """
+    Создает и возвращает MIME-сообщение.
+
+    Параметр:
+    email: адрес электронной почты получателя.
+
+    Возвращает:
+    MIMEMultipart: объект сообщения, готовый для отправки.
+    """
     subject = 'Тема письма'
     body = ('- Текcт письма -')
     msg = MIMEMultipart()
@@ -37,7 +46,16 @@ def create_msg(email):
     return msg
 
 
-def format_filename(full_name):
+def format_filename(full_name: str) -> str:
+    """
+    Преобразует полные ФИО получателя для поиска нужного файла.
+
+    Параметр:
+    full_name: ФИО получателя.
+
+    Возвращает:
+    Строку в формате "Фамилия И.О..pdf".
+    """
     parts = full_name.split()
     last_name = parts[0]
     initials = parts[1][:1] + '.' + parts[2][:1] + '.'
@@ -45,6 +63,13 @@ def format_filename(full_name):
 
 
 def main():
+    """
+    Основная функция, которая выполняет следующие действия:
+    1. Подключается к SMTP-серверу.
+    2. Читает список контактов из Excel-файла.
+    3. Находит нужные файлы для вложения.
+    4. Создает и отправляет электронные письма с прикрепленными файлами.
+    """
     server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
     server.login(EMAIL_USER, EMAIL_PASSWORD)
 
